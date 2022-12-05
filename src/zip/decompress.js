@@ -1,7 +1,8 @@
 import { createUnzip } from 'zlib'
-import { createWriteStream, createReadStream } from 'fs'
+import { createWriteStream, createReadStream } from 'fs';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { pipeline } from 'stream';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -13,7 +14,14 @@ const decompress = async () => {
     const ws = createWriteStream(__dirname + '/files/fileToCompress.txt');
     const decompresser = createUnzip();
 
-    rs.pipe(decompresser).pipe(ws);
+    pipeline(
+        rs,
+        decompresser, 
+        ws,
+        (err) => {
+            if (err !== undefined) throw err;
+        }
+    )
 };
 
 await decompress();

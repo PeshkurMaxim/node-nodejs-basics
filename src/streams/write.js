@@ -1,6 +1,7 @@
 import { createWriteStream } from 'fs';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { pipeline } from 'stream';
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -10,7 +11,13 @@ const write = async () => {
 
     const ws = createWriteStream(__dirname + '/files/fileToWrite.txt');
 
-    process.stdin.pipe(ws);
+    pipeline(
+        process.stdin, 
+        ws,
+        (err) => {
+            if (err !== undefined) throw err;
+        }
+    )
 
 };
 

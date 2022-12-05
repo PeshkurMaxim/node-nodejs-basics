@@ -1,5 +1,5 @@
 import { createReadStream } from 'fs';
-import { pipeline, Transform } from 'stream';
+import { pipeline } from 'stream';
 import { createHash } from 'crypto';
 import { dirname } from 'path';
 import {fileURLToPath} from 'url';
